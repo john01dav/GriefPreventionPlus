@@ -44,6 +44,8 @@ public class DatabaseDataStore extends DataStore
 		this.password = password;
 		
 		this.initialize();
+
+		new DatabaseKeepAlivePingTask(this).start();
 	}
 	
 	@Override
@@ -202,7 +204,7 @@ public class DatabaseDataStore extends DataStore
             catch(SQLException e)
             {
                 GriefPrevention.AddLogEntry("Unable to convert player data.  Details:");
-                GriefPrevention.AddLogEntry(e.getMessage());
+                GriefPrevention.AddLogEntry(e.getMessage()); e.printStackTrace();
                 e.printStackTrace();
             }
         }
@@ -368,7 +370,7 @@ public class DatabaseDataStore extends DataStore
 		catch(SQLException e)
 		{
 			GriefPrevention.AddLogEntry("Unable to save data for claim at " + this.locationToString(claim.lesserBoundaryCorner) + ".  Details:");
-			GriefPrevention.AddLogEntry(e.getMessage());
+			GriefPrevention.AddLogEntry(e.getMessage()); e.printStackTrace();
 		}
 	}
 	
@@ -451,7 +453,7 @@ public class DatabaseDataStore extends DataStore
 		catch(SQLException e)
 		{
 			GriefPrevention.AddLogEntry("Unable to save data for claim at " + this.locationToString(claim.lesserBoundaryCorner) + ".  Details:");
-			GriefPrevention.AddLogEntry(e.getMessage());
+			GriefPrevention.AddLogEntry(e.getMessage()); e.printStackTrace();
 		}
 	}
 	
@@ -474,7 +476,7 @@ public class DatabaseDataStore extends DataStore
 		catch(SQLException e)
 		{
 			GriefPrevention.AddLogEntry("Unable to delete data for claim " + claim.id + ".  Details:");
-			GriefPrevention.AddLogEntry(e.getMessage());
+			GriefPrevention.AddLogEntry(e.getMessage()); e.printStackTrace();
 			e.printStackTrace();
 		}
 	}
@@ -503,7 +505,7 @@ public class DatabaseDataStore extends DataStore
 		catch(SQLException e)
 		{
 			GriefPrevention.AddLogEntry("Unable to retrieve data for player " + playerID.toString() + ".  Details:");
-			GriefPrevention.AddLogEntry(e.getMessage());
+			GriefPrevention.AddLogEntry(e.getMessage()); e.printStackTrace();
 		}
 			
 		return playerData;
@@ -536,7 +538,7 @@ public class DatabaseDataStore extends DataStore
 		catch(SQLException e)
 		{
 			GriefPrevention.AddLogEntry("Unable to save data for player " + playerID.toString() + ".  Details:");
-			GriefPrevention.AddLogEntry(e.getMessage());
+			GriefPrevention.AddLogEntry(e.getMessage()); e.printStackTrace();
 		}
 	}
 	
@@ -562,7 +564,7 @@ public class DatabaseDataStore extends DataStore
 		catch(SQLException e)
 		{
 			GriefPrevention.AddLogEntry("Unable to set next claim ID to " + nextID + ".  Details:");
-			GriefPrevention.AddLogEntry(e.getMessage());
+			GriefPrevention.AddLogEntry(e.getMessage()); e.printStackTrace();
 		}
 	}
 	
@@ -637,7 +639,7 @@ public class DatabaseDataStore extends DataStore
         catch(SQLException e)
         {
             GriefPrevention.AddLogEntry("Unable to retrieve schema version from database.  Details:");
-            GriefPrevention.AddLogEntry(e.getMessage());
+            GriefPrevention.AddLogEntry(e.getMessage()); e.printStackTrace();
             e.printStackTrace();
             return 0;
         }
@@ -657,7 +659,19 @@ public class DatabaseDataStore extends DataStore
         catch(SQLException e)
         {
             GriefPrevention.AddLogEntry("Unable to set next schema version to " + versionToSet + ".  Details:");
-            GriefPrevention.AddLogEntry(e.getMessage());
+            GriefPrevention.AddLogEntry(e.getMessage()); e.printStackTrace();
         }
     }
+
+	protected synchronized void pingDatabase(){
+		try{
+			refreshDataConnection();
+
+			Statement statement = databaseConnection.createStatement();
+			statement.execute("SELECT 1");
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
 }

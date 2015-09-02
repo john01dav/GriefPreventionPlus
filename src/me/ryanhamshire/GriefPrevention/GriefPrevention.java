@@ -2349,7 +2349,7 @@ public class GriefPrevention extends JavaPlugin
 	public void onDisable()
 	{ 
 		//save data for any online players
-		Player[] players = (Player[]) getServer().getOnlinePlayers().toArray();
+		Player[] players = GriefPrevention.instance.getServer().getOnlinePlayers().toArray(new Player[0]);
 		for(int i = 0; i < players.length; i++)
 		{
 			Player player = players[i];

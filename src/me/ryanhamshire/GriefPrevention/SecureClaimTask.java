@@ -41,7 +41,7 @@ class SecureClaimTask implements Runnable
 			claim.doorsOpen = false;
 			
 			//eject bad guys
-			Player[] onlinePlayers = (Player[])GriefPrevention.instance.getServer().getOnlinePlayers().toArray();
+			Player[] onlinePlayers = GriefPrevention.instance.getServer().getOnlinePlayers().toArray(new Player[0]);
 			for(int j = 0; j < onlinePlayers.length; j++)
 			{
 				Player player = onlinePlayers[j];

@@ -122,7 +122,7 @@ public class BlockEventHandler implements Listener
 			
 			if(!player.hasPermission("griefprevention.eavesdrop"))
 			{
-				Player[] players = (Player[]) GriefPrevention.instance.getServer().getOnlinePlayers().toArray();
+				Player[] players = GriefPrevention.instance.getServer().getOnlinePlayers().toArray(new Player[0]);
 				for(int i = 0; i < players.length; i++)
 				{
 					Player otherPlayer = players[i];

@@ -404,8 +404,8 @@ class PlayerEventHandler implements Listener
 			}
 			
 			String logMessage = logMessageBuilder.toString();
-			
-			Player[] players = (Player[])GriefPrevention.instance.getServer().getOnlinePlayers().toArray();
+
+			Player[] players = GriefPrevention.instance.getServer().getOnlinePlayers().toArray(new Player[0]);
 			for(int i = 0; i < players.length; i++)
 			{
 				Player player = players[i];
@@ -563,7 +563,7 @@ class PlayerEventHandler implements Listener
 						GriefPrevention.AddLogEntry("Auto-banned " + player.getName() + " because that account is using an IP address very recently used by banned player " + info.bannedAccountName + " (" + info.address.toString() + ").");
 						
 						//notify any online ops
-						Player[] players = (Player[])GriefPrevention.instance.getServer().getOnlinePlayers().toArray();
+						Player[] players = GriefPrevention.instance.getServer().getOnlinePlayers().toArray(new Player[0]);
 						for(int k = 0; k < players.length; k++)
 						{
 							if(players[k].isOp())
